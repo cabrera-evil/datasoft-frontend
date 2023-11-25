@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { IProductModel } from '../../../../models/IProductModel.interface';
 
 interface ProductDetailProps {
@@ -5,10 +6,15 @@ interface ProductDetailProps {
 }
 
 export default function ProductDetail({ props }: ProductDetailProps) {
+    const [isAddedToCart, setIsAddedToCart] = useState(false);
+
+    const addToCart = () => {
+        setIsAddedToCart(!isAddedToCart);
+    };
+
     return (
         <div className="flex flex-col justify-center h-screen">
-            <div
-                className="relative flex flex-col md:flex-row md:space-x-5 space-y-3 md:space-y-0 rounded-xl shadow-lg p-3 max-w-xs md:max-w-3xl mx-auto border border-white bg-white">
+            <div className="relative flex flex-col md:flex-row md:space-x-5 space-y-3 md:space-y-0 rounded-xl shadow-lg p-3 max-w-xs md:max-w-3xl mx-auto border border-white bg-white">
                 <div className="w-full md:w-1/3 bg-white grid place-items-center">
                     <img src={props.prdImage} alt="" className="rounded-xl" />
                 </div>
@@ -21,8 +27,14 @@ export default function ProductDetail({ props }: ProductDetailProps) {
                     <p className="text-xl font-black text-gray-800">
                         ${props.prdPrice}
                     </p>
+                    <button
+                        className={`bg-blue-500 text-white px-4 py-2 rounded-md ${isAddedToCart ? 'bg-red-500' : ''}`}
+                        onClick={addToCart}
+                    >
+                        {isAddedToCart ? 'Quitar del carrito' : 'Añadir al carrito'}
+                    </button>
                 </div>
             </div>
         </div>
-    )
+    );
 }
