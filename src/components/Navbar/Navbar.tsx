@@ -40,7 +40,7 @@ const Navbar: React.FC = () => {
 
           <div className="ml-6 flex flex-1 gap-x-3">
             <div className="flex cursor-pointer select-none items-center gap-x-2">
-              <Dropdown title={selectedCategory?.name || 'Select a category'} items={categories} onSelect={handleCategorySelect} />
+              <Dropdown title={selectedCategory?.name || 'All'} items={categories} onSelect={handleCategorySelect} />
             </div>
             <input type="text" className="w-full rounded-md border border-[#DDE2E4] px-3 py-2 text-sm" />
           </div>
