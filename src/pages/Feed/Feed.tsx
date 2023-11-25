@@ -4,6 +4,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import ProductService from '../../services/Product.service';
 import FeedItem from '../Feed/components/FeedItem/FeedItem';
 import { IProductModel } from '../../models/IProductModel.interface';
+import { ToastContainer, toast } from 'react-toastify';
 
 const Feed: React.FC = () => {
     const [feedItemsData, setFeedItemsData] = useState<IProductModel[]>([]);
@@ -26,7 +27,12 @@ const Feed: React.FC = () => {
                     });
             }
         } catch (error) {
-            console.error('Error fetching data:', error);
+            toast.error('Error fetching products', {
+                toastId: 'fetch-error',
+                autoClose: 3000,
+                hideProgressBar: true,
+                closeOnClick: true,
+            });
         }
     }, [catId]);
 
@@ -41,6 +47,7 @@ const Feed: React.FC = () => {
                     price={item.prdPrice}
                 />
             ))}
+            <ToastContainer />
         </div>
     );
 };
