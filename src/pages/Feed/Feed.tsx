@@ -41,10 +41,7 @@ const Feed: React.FC = () => {
             {feedItemsData.map((item, index) => (
                 <FeedItem
                     key={index}
-                    imageSrc={item.prdImage}
-                    category={item.categoryModel.catName}
-                    name={item.prdName}
-                    price={item.prdPrice}
+                    props={item}
                 />
             ))}
             <ToastContainer />
