@@ -1,31 +1,52 @@
-import FeedItem from "../../components/FeedItem/FeedItem";
+// Home.js
+import React, { useEffect, useState } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import ProductService from '../../services/Product.service';
+import FeedItem from '../Feed/components/FeedItem/FeedItem';
+import { IProductModel } from '../../models/IProductModel.interface';
+import { ToastContainer, toast } from 'react-toastify';
 
-export default function Feed() {
-  // Supongamos que tienes un array de datos que representan tus elementos.
-  const feedItemsData = [
-    { imageSrc: "https://user-images.githubusercontent.com/2805249/64069899-8bdaa180-cc97-11e9-9b19-1a9e1a254c18.png", category: "Indoor", name: "Peace Lily", price: 36.00 },
-    { imageSrc: "https://user-images.githubusercontent.com/2805249/64069899-8bdaa180-cc97-11e9-9b19-1a9e1a254c18.png", category: "Indoor", name: "Peace Lily", price: 36.00 },
-    { imageSrc: "https://user-images.githubusercontent.com/2805249/64069899-8bdaa180-cc97-11e9-9b19-1a9e1a254c18.png", category: "Indoor", name: "Peace Lily", price: 36.00 },
-    { imageSrc: "https://user-images.githubusercontent.com/2805249/64069899-8bdaa180-cc97-11e9-9b19-1a9e1a254c18.png", category: "Indoor", name: "Peace Lily", price: 36.00 },
-    { imageSrc: "https://user-images.githubusercontent.com/2805249/64069899-8bdaa180-cc97-11e9-9b19-1a9e1a254c18.png", category: "Indoor", name: "Peace Lily", price: 36.00 },
-    { imageSrc: "https://user-images.githubusercontent.com/2805249/64069899-8bdaa180-cc97-11e9-9b19-1a9e1a254c18.png", category: "Indoor", name: "Peace Lily", price: 36.00 },
-    { imageSrc: "https://user-images.githubusercontent.com/2805249/64069899-8bdaa180-cc97-11e9-9b19-1a9e1a254c18.png", category: "Indoor", name: "Peace Lily", price: 36.00 },
-    { imageSrc: "https://user-images.githubusercontent.com/2805249/64069899-8bdaa180-cc97-11e9-9b19-1a9e1a254c18.png", category: "Indoor", name: "Peace Lily", price: 36.00 },
-    { imageSrc: "https://user-images.githubusercontent.com/2805249/64069899-8bdaa180-cc97-11e9-9b19-1a9e1a254c18.png", category: "Indoor", name: "Peace Lily", price: 36.00 },
-    { imageSrc: "https://user-images.githubusercontent.com/2805249/64069899-8bdaa180-cc97-11e9-9b19-1a9e1a254c18.png", category: "Indoor", name: "Peace Lily", price: 36.00 },
-  ];
+const Feed: React.FC = () => {
+    const [feedItemsData, setFeedItemsData] = useState<IProductModel[]>([]);
+    const { catId } = useParams();
+    const productService = new ProductService();
+    const navigate = useNavigate();
 
-  return (
-    <div className="flex flex-wrap gap-4">
-      {feedItemsData.map((item, index) => (
-        <FeedItem
-          key={index}
-          imageSrc={item.imageSrc}
-          category={item.category}
-          name={item.name}
-          price={item.price}
-        />
-      ))}
-    </div>
-  );
-}
+    useEffect(() => {
+        try {
+            if (catId !== '0' && catId !== undefined) {
+                productService.getProductByCategory(catId)
+                    .then((data) => {
+                        setFeedItemsData(data);
+                    });
+            } else {
+                navigate('/');
+                productService.getProduct()
+                    .then((data) => {
+                        setFeedItemsData(data);
+                    });
+            }
+        } catch (error) {
+            toast.error('Error fetching products', {
+                toastId: 'fetch-error',
+                autoClose: 3000,
+                hideProgressBar: true,
+                closeOnClick: true,
+            });
+        }
+    }, [catId]);
+
+    return (
+        <div className="flex flex-wrap gap-4">
+            {feedItemsData.map((item, index) => (
+                <FeedItem
+                    key={index}
+                    props={item}
+                />
+            ))}
+            <ToastContainer />
+        </div>
+    );
+};
+
+export default Feed;

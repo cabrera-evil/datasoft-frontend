@@ -1,30 +1,25 @@
 import React, { useEffect } from 'react';
 import Dropdown from '../Dropdown/Dropdown';
+import { useNavigate } from 'react-router-dom';
 import { ICategoryModel } from '../../models/ICategoryModel.interface';
+import CategoryService from '../../services/Category.service';
 
 const Navbar: React.FC = () => {
   const [categories, setCategories] = React.useState<ICategoryModel[]>([]);
   const [selectedCategory, setSelectedCategory] = React.useState(categories[0]);
+  const categoryService = new CategoryService();
+  const navigate = useNavigate();
 
   useEffect(() => {
-    setCategories([
-      { id: 1, name: 'All' },
-      { id: 2, name: 'Electronics' },
-      { id: 3, name: 'Clothes' },
-      { id: 4, name: 'Shoes' },
-      { id: 5, name: 'Books' },
-      { id: 6, name: 'Furniture' },
-      { id: 7, name: 'Toys' },
-      { id: 8, name: 'Others' },
-    ]);
+    categoryService.getCategories()
+      .then((categories) => {
+        setCategories(categories);
+      });
   }, []);
-
-  useEffect(() => {
-    console.log(selectedCategory);
-  }, [selectedCategory]);
 
   const handleCategorySelect = (category: ICategoryModel) => {
     setSelectedCategory(category);
+    navigate(`/category/${category.catId}`);
   };
 
   return (
@@ -40,9 +35,8 @@ const Navbar: React.FC = () => {
 
           <div className="ml-6 flex flex-1 gap-x-3">
             <div className="flex cursor-pointer select-none items-center gap-x-2">
-              <Dropdown title={selectedCategory?.name || 'All'} items={categories} onSelect={handleCategorySelect} />
+              <Dropdown title={selectedCategory?.catName || 'All'} items={categories} onSelect={handleCategorySelect} />
             </div>
-            <input type="text" className="w-full rounded-md border border-[#DDE2E4] px-3 py-2 text-sm" />
           </div>
 
           <div className="ml-2 flex">

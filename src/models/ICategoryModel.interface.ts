@@ -1,4 +1,4 @@
 export interface ICategoryModel {
-    id: number;
-    name: string;
+    catId: number;
+    catName: string;
 }
