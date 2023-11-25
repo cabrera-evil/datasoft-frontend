@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import Dropdown from '../Dropdown/Dropdown';
+import { useNavigate } from 'react-router-dom';
 import { ICategoryModel } from '../../models/ICategoryModel.interface';
 import CategoryService from '../../services/Category.service';
 
@@ -7,6 +8,7 @@ const Navbar: React.FC = () => {
   const [categories, setCategories] = React.useState<ICategoryModel[]>([]);
   const [selectedCategory, setSelectedCategory] = React.useState(categories[0]);
   const categoryService = new CategoryService();
+  const navigate = useNavigate();
 
   useEffect(() => {
     categoryService.getCategories()
@@ -15,12 +17,9 @@ const Navbar: React.FC = () => {
       });
   }, []);
 
-  useEffect(() => {
-    console.log(selectedCategory);
-  }, [selectedCategory]);
-
   const handleCategorySelect = (category: ICategoryModel) => {
     setSelectedCategory(category);
+    navigate(`/category/${category.catId}`);
   };
 
   return (

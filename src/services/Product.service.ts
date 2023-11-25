@@ -11,7 +11,7 @@ export default class ProductService {
         }
     }
 
-    async getProductByCategory(catId: number) {
+    async getProductByCategory(catId: string) {
         try {
             const res = await axios.get(`/product/filter?category=${catId}`);
             return res.data;
