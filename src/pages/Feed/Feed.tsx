@@ -1,4 +1,4 @@
-import FeedItem from "../../components/FeedItem/FeedItem";
+import FeedItem from "./components/FeedItem/FeedItem";
 
 export default function Feed() {
   // Supongamos que tienes un array de datos que representan tus elementos.

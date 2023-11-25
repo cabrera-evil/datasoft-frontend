@@ -1,8 +1,8 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 
 interface DropdownItem {
-    id: number;
-    name: string;
+    catId: number;
+    catName: string;
 }
 
 interface DropdownProps {
@@ -83,14 +83,23 @@ const Dropdown: React.FC<DropdownProps> = ({ title, items, onSelect }) => {
                     className="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 hidden"
                 >
                     <div className="py-2 p-2" role="menu" aria-orientation="vertical" aria-labelledby="dropdown-button">
+                        {/* "All" option */}
+                        <div
+                            onClick={() => handleItemClick({ catId: 0, catName: 'All' })}
+                            className="block px-4 py-2 mb-1 text-sm text-gray-700 rounded-md bg-white hover:bg-gray-100 cursor-pointer"
+                            role="menuitem"
+                        >
+                            All
+                        </div>
+                        {/* Other categories */}
                         {items.map((item) => (
                             <div
-                                key={item.id}
+                                key={item.catId}
                                 onClick={() => handleItemClick(item)}
                                 className="block px-4 py-2 mb-1 text-sm text-gray-700 rounded-md bg-white hover:bg-gray-100 cursor-pointer"
                                 role="menuitem"
                             >
-                                {item.name}
+                                {item.catName}
                             </div>
                         ))}
                     </div>
